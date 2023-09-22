@@ -11,7 +11,7 @@ public class Main {
   //  public static final String WHITE = "\u001B[37m";
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        if(LoadAndSaveGame.loadGame().isEmpty()) {
+        if(LoadGame.loadGame().isEmpty()) {
             System.out.print("Quelle sera la taille du plateau ? ");
             int nbColumn = VerifyGame.verifyInputInteger(scanner);
             while (nbColumn < 3) {
@@ -22,7 +22,7 @@ public class Main {
             PlayGame.displayArray(newArray, Optional.empty());
             PlayGame.playMatch(scanner, newArray);
         } else {
-            ArrayList<String> arrayToLoad = LoadAndSaveGame.loadGame();
+            ArrayList<String> arrayToLoad = LoadGame.loadGame();
             PlayGame.displayArray(arrayToLoad, Optional.empty());
             PlayGame.playMatch(scanner, arrayToLoad);
         }

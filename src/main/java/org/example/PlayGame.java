@@ -16,18 +16,19 @@ public class PlayGame {
         long nbTurn = nbO+nbX;
         while (nbTurn < newArray.size()) {
             if(nbTurn==0 || nbO == nbX) {
-                System.out.print(NEW_LINE + "Premier joueur" + NEW_LINE + "Quelle case voulez-vous cocher ?");
-
-
-                int selectFirst = LoadAndSaveGame.saveGame(newArray, scanner);
-                VerifyGame.verifyFreeCase(newArray, selectFirst, scanner);
+                System.out.print(NEW_LINE + "Premier joueur");
+                System.out.print(NEW_LINE + "Quelle case voulez-vous cocher ?");
+                int selectFirst = VerifyGame.verifyInputOrSaveGame(newArray, scanner);
+                while(newArray.get(selectFirst-1).equals("O") | newArray.get(selectFirst-1).equals("X")){
+                    System.out.print("Case déjà prise." + NEW_LINE + "Selectionner une autre case ");
+                    selectFirst = scanner.nextInt();
+                }
                 displayArray(addXorO(newArray, selectFirst, ">x<"), Optional.empty());
                 System.out.print(NEW_LINE + "S'agit_il bien de cette case ?");
 
-                int confirmation = scanner.nextInt();
-
+                int confirmation = VerifyGame.verifyInputOrSaveGame(newArray, scanner);
                 while (confirmation != selectFirst) {
-                    VerifyGame.verifyFreeCase(newArray, confirmation, scanner);
+                    confirmation = VerifyGame.verifyFreeCase(newArray, confirmation, scanner);
                     displayArray(addXorO(newArray, confirmation, ">x<"), Optional.empty());
                     System.out.print(NEW_LINE + "S'agit_il bien de cette case ?");
                     int newSelect = scanner.nextInt();
@@ -38,41 +39,27 @@ public class PlayGame {
                 }
                 newArray = addXorO(newArray, selectFirst, "X");
                 //scanner.nextLine();
-                if(VerifyGame.verifyLinesVertical(newArray, "X", squareRoot(newArray.size()))){
-                    System.out.print("Le premier joueur a gagné !"+NEW_LINE);
-                    LoadAndSaveGame.removeSave();
-                    displayArray(newArray,Optional.of(WinningGame.winningLineVertical(newArray,"X")));
-                    return;
-                } else if(VerifyGame.verifyLinesHorizontal(newArray, "X", squareRoot(newArray.size()))){
-                    System.out.print("Le premier joueur a gagné !"+NEW_LINE);
-                    LoadAndSaveGame.removeSave();
-                    displayArray(newArray,Optional.of(WinningGame.winningLineHorizontal(newArray,"O")));
-                    return;
-                } else if(VerifyGame.verifyFirstLineDiagonal(newArray, "X", squareRoot(newArray.size()))){
-                    System.out.print("Le premier joueur a gagné !"+NEW_LINE);
-                    LoadAndSaveGame.removeSave();
-                    displayArray(newArray,Optional.of(WinningGame.winningLineDiagonal1(newArray,"O")));
-                    return;
-                } else if (VerifyGame.verifySecondLineDiagonal(newArray, "X", squareRoot(newArray.size()))){
-                    System.out.print("Le premier joueur a gagné !"+NEW_LINE);
-                    LoadAndSaveGame.removeSave();
-                    displayArray(newArray,Optional.of(WinningGame.winningLineDiagonal2(newArray,"X")));
-                    return;
-                }
+               if (VerifyGame.verifyWinningLineOnEveryLines(newArray,"X")){
+                   scanner.close();
+                   return;
+               }
                 displayArray(newArray, Optional.empty());
                 nbTurn++;
                 nbX++;
             }
-            System.out.print(NEW_LINE + "Deuxieme joueur" + NEW_LINE + "Quelle case voulez-vous cocher ?");
-
-
-            int selectSecond = LoadAndSaveGame.saveGame(newArray, scanner);
+            System.out.print(NEW_LINE + "Deuxième joueur");
+            System.out.print(NEW_LINE + "Quelle case voulez-vous cocher ?");
+            int selectSecond = VerifyGame.verifyInputOrSaveGame(newArray, scanner);
+            while(newArray.get(selectSecond-1).equals("O") | newArray.get(selectSecond-1).equals("X")){
+                System.out.print("Case déjà prise." + NEW_LINE + "Selectionner une autre case ");
+                selectSecond = scanner.nextInt();
+            }
             VerifyGame.verifyFreeCase(newArray, selectSecond, scanner);
             displayArray(addXorO(newArray, selectSecond, ">o<"), Optional.empty());
             System.out.print(NEW_LINE + "S'agit_il bien de cette case ?");
-            int confirmationSecond = scanner.nextInt();
+            int confirmationSecond = VerifyGame.verifyInputOrSaveGame(newArray, scanner);
             while(confirmationSecond!=selectSecond){
-                VerifyGame.verifyFreeCase(newArray, confirmationSecond, scanner);
+                confirmationSecond = VerifyGame.verifyFreeCase(newArray, confirmationSecond, scanner);
                 displayArray(addXorO(newArray, confirmationSecond, ">o<"), Optional.empty());
                 System.out.print(NEW_LINE + "S'agit_il bien de cette case ?");
                 int newSelect = scanner.nextInt();
@@ -81,33 +68,15 @@ public class PlayGame {
                 confirmationSecond=newSelect;
             }
             newArray = addXorO(newArray, selectSecond, "O");
-
-            if(VerifyGame.verifyLinesVertical(newArray, "O", squareRoot(newArray.size()))){
-                System.out.print("Le deuxième joueur a gagné !"+NEW_LINE);
-                LoadAndSaveGame.removeSave();
-                displayArray(newArray,Optional.of(WinningGame.winningLineVertical(newArray,"O")));
-                return;
-            } else if(VerifyGame.verifyLinesHorizontal(newArray, "O", squareRoot(newArray.size()))){
-                System.out.print("Le deuxième joueur a gagné !"+NEW_LINE);
-                LoadAndSaveGame.removeSave();
-                displayArray(newArray,Optional.of(WinningGame.winningLineHorizontal(newArray,"O")));
-                return;
-            } else if(VerifyGame.verifyFirstLineDiagonal(newArray, "O", squareRoot(newArray.size()))){
-                System.out.print("Le deuxième joueur a gagné !"+NEW_LINE);
-                LoadAndSaveGame.removeSave();
-                displayArray(newArray,Optional.of(WinningGame.winningLineDiagonal1(newArray,"O")));
-                return;
-            } else if (VerifyGame.verifySecondLineDiagonal(newArray, "O", squareRoot(newArray.size()))){
-                System.out.print("Le deuxième joueur a gagné !"+NEW_LINE);
-                LoadAndSaveGame.removeSave();
-                displayArray(newArray,Optional.of(WinningGame.winningLineDiagonal2(newArray,"O")));
-                return;
-            }
+          if(VerifyGame.verifyWinningLineOnEveryLines(newArray,"O")){
+              scanner.close();
+              return;
+          }
             displayArray(newArray, Optional.empty());
             nbTurn++;
             nbO++;
         }
-        LoadAndSaveGame.removeSave();
+        LoadGame.removeSave();
         System.out.print(NEW_LINE + "Match nul, personne ne remporte cette partie.");
     }
 

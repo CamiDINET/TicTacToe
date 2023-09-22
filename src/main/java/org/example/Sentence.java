@@ -4,8 +4,8 @@ import static org.example.PlayGame.NEW_LINE;
 
 public class Sentence {
 
-   public static void playerSelectCase(String player){
-       System.out.print(NEW_LINE + player + NEW_LINE + "Quelle case voulez-vous cocher ?");
+   public static void playerSelectCase(){
+       System.out.print(NEW_LINE + "Quelle case voulez-vous cocher ?");
    }
     public static void playerConfirmSelect(){
         System.out.print(NEW_LINE + "S'agit_il bien de cette case ?");
